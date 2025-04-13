@@ -1,51 +1,73 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+// React Router imports
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import Home from "./ui/Home";
-import Menu, { loader as menuLoader } from "./features/menu/Menu";
+// Layout and Common Components
+import AppLayout from './ui/AppLayout';
+import Error from './ui/Error';
+import Home from './ui/Home';
+
+// Feature Components
+import Menu, { loader as menuLoader } from './features/menu/Menu';
+import Cart from './features/cart/Cart';
 import CreateOrder, {
-  action as CreateOrderActions,
-} from "./features/order/CreateOrder";
-import Order, { loader as orderLoader } from "./features/order/Order";
-import Cart from "./features/cart/Cart";
-import AppLayout from "./ui/AppLayout";
-import Error from "./ui/Error";
+  action as createOrderAction,
+} from './features/order/CreateOrder';
+import Order, { loader as orderLoader } from './features/order/Order';
+import { action as updateOrderAction } from './features/order/UpdateOrder';
 
+// Router Configuration
 const router = createBrowserRouter([
   {
     element: <AppLayout />,
     errorElement: <Error />,
     children: [
+      // Home Route
       {
-        path: "/",
+        path: '/',
         element: <Home />,
         errorElement: <Error />,
       },
+
+      // Menu Route
       {
-        path: "/menu",
+        path: '/menu',
         element: <Menu />,
         loader: menuLoader,
         errorElement: <Error />,
       },
+
+      // Cart Route
       {
-        path: "/cart",
+        path: '/cart',
         element: <Cart />,
         errorElement: <Error />,
       },
+
+      // Order Routes
       {
-        path: "/order/new",
+        path: '/order/new',
         element: <CreateOrder />,
+        action: createOrderAction,
         errorElement: <Error />,
-        action: CreateOrderActions,
       },
       {
-        path: "/order/:orderId",
+        path: '/order/:orderId',
         element: <Order />,
         loader: orderLoader,
+        action: updateOrderAction,
         errorElement: <Error />,
       },
     ],
   },
 ]);
-export default function App() {
+
+// App Component
+function App() {
   return <RouterProvider router={router} />;
 }
+
+export default App;
+
+// NETLIFY_AUTH_TOKEN: يمكنك الحصول عليه من إعدادات حسابك على Netlify
+// NETLIFY_SITE_ID: معرف موقعك على Netlify
+// VITE_API_URL: رابط الـ API الخاص بالتطبيق

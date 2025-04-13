@@ -1,7 +1,7 @@
-import OrderItem from '../order/OrderItem';
-// Test ID: IIDSAT
+import { useEffect } from 'react';
+import { useFetcher, useLoaderData } from 'react-router-dom';
 
-import { useLoaderData } from 'react-router-dom';
+// Services & Utils
 import { getOrder } from '../../services/apiRestaurant';
 import {
   calcMinutesLeft,
@@ -9,120 +9,38 @@ import {
   formatDate,
 } from '../../utils/helpers';
 
-// const order = {
-//   id: 'ABCDEF',
-//   customer: 'Jonas',
-//   phone: '123456789',
-//   address: 'Arroios, Lisbon , Portugal',
-//   priority: true,
-//   estimatedDelivery: '2027-04-25T10:00:00',
-//   cart: [
-//     {
-//       pizzaId: 7,
-//       name: 'Napoli',
-//       quantity: 3,
-//       unitPrice: 16,
-//       totalPrice: 48,
-//     },
-//     {
-//       pizzaId: 5,
-//       name: 'Diavola',
-//       quantity: 2,
-//       unitPrice: 16,
-//       totalPrice: 32,
-//     },
-//     {
-//       pizzaId: 3,
-//       name: 'Romana',
-//       quantity: 1,
-//       unitPrice: 15,
-//       totalPrice: 15,
-//     },
-//   ],
-//   position: '-9.000,38.000',
-//   orderPrice: 95,
-//   priorityPrice: 19,
-// };
+// Components
+import OrderItem from './OrderItem';
+import UpdateOrder from './UpdateOrder';
 
-const order = {
-  customer: 'Jonas Schmedtmann',
-  status: 'delivered',
-  priority: true,
-  cart: [
-    {
-      addIngredients: [],
-      removeIngredients: [],
-      pizzaId: 1,
-      name: 'Margherita',
-      quantity: 2,
-      unitPrice: 12,
-      totalPrice: 24,
-    },
-    {
-      addIngredients: [],
-      removeIngredients: [],
-      pizzaId: 4,
-      name: 'Prosciutto e Rucola',
-      quantity: 3,
-      unitPrice: 16,
-      totalPrice: 48,
-    },
-    {
-      addIngredients: [],
-      removeIngredients: [],
-      pizzaId: 6,
-      name: 'Vegetale',
-      quantity: 1,
-      unitPrice: 13,
-      totalPrice: 13,
-    },
-    {
-      addIngredients: [],
-      removeIngredients: [],
-      pizzaId: 7,
-      name: 'Napoli',
-      quantity: 2,
-      unitPrice: 16,
-      totalPrice: 32,
-    },
-    {
-      addIngredients: [],
-      removeIngredients: [],
-      pizzaId: 11,
-      name: 'Spinach and Mushroom',
-      quantity: 2,
-      unitPrice: 15,
-      totalPrice: 30,
-    },
-  ],
-  id: 'IIDSAT',
-  estimatedDelivery: '2027-04-25T06:42:22',
-  // estimatedDelivery: "2027-04-25T10:00:00",
+function Order() {
+  const order = useLoaderData();
+  const fetcher = useFetcher();
 
-  orderPrice: 147,
-  priorityPrice: 29,
-};
+  // Load menu data for ingredients
+  useEffect(() => {
+    if (!fetcher.data && fetcher.state === 'idle') {
+      fetcher.load('/menu');
+    }
+  }, [fetcher]);
 
-export default function Order() {
-  // const order = useLoaderData();
-  // console.log(order);
-  // Everyone can search for all orders, so for privacy reasons we're gonna gonna exclude names or address, these are only for the restaurant staff
   const {
     id,
     status,
     priority,
     priorityPrice,
     orderPrice,
-    customer,
     estimatedDelivery,
     cart,
   } = order;
+
   const deliveryIn = calcMinutesLeft(estimatedDelivery);
 
   return (
     <div className="space-y-9 px-4 py-6">
+      {/* Order Status Header */}
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-xl font-semibold">Order # {id} status</h2>
+        <h2 className="text-xl font-semibold">Order #{id} status</h2>
 
         <div className="flex flex-wrap gap-2">
           {priority && (
@@ -136,10 +54,11 @@ export default function Order() {
         </div>
       </div>
 
+      {/* Delivery Info */}
       <div className="flex flex-wrap items-center justify-between gap-2 bg-stone-200 px-6 py-5">
         <p className="font-medium">
           {deliveryIn >= 0
-            ? `Only ${calcMinutesLeft(estimatedDelivery)} minutes left 😃`
+            ? `Only ${deliveryIn} minutes left 😃`
             : 'Order should have arrived'}
         </p>
         <p className="text-xs text-stone-500">
@@ -147,11 +66,22 @@ export default function Order() {
         </p>
       </div>
 
+      {/* Order Items */}
       <ul className="divide-y divide-stone-200 border-y">
         {cart.map((item) => (
-          <OrderItem item={item} key={item.id} />
+          <OrderItem
+            item={item}
+            key={item.pizzaId}
+            ingredients={
+              fetcher?.data?.find((p) => p.id === item.pizzaId)?.ingredients ??
+              []
+            }
+            isLoadingIngredients={fetcher.state === 'loading'}
+          />
         ))}
       </ul>
+
+      {/* Price Details */}
       <div className="space-y-2 bg-stone-200 px-6 py-5">
         <p className="text-sm font-medium text-stone-600">
           Price pizza: {formatCurrency(orderPrice)}
@@ -165,6 +95,9 @@ export default function Order() {
           To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}
         </p>
       </div>
+
+      {/* Priority Update Button */}
+      {!priority && <UpdateOrder order={order} />}
     </div>
   );
 }
@@ -173,3 +106,5 @@ export async function loader({ params }) {
   const order = await getOrder(params.orderId);
   return order;
 }
+
+export default Order;
