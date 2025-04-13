@@ -64,27 +64,24 @@ function Header() {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="mt-4 md:hidden">
-            <div className="mb-4">
-              <SearchOrder />
-            </div>
-            <nav className="flex flex-col gap-4 font-semibold text-second">
-              <Username />
-              <Link
-                to="/menu"
-                className="transition-colors duration-200 hover:text-white"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Menu
-              </Link>
-              <Link
-                to="/cart"
-                className="transition-colors duration-200 hover:text-white"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Cart
-              </Link>
-            </nav>
+          <div className="mt-4 flex flex-col gap-4 space-y-4 py-16 text-center font-semibold text-second md:hidden">
+            <SearchOrder view="small" />
+            <Username />
+            <Link
+              to="/menu"
+              className="transition-colors duration-200 hover:text-white"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Menu
+            </Link>
+            <Link
+              to="/cart"
+              className="transition-colors duration-200 hover:text-white"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Cart
+            </Link>
+            <nav className=""></nav>
           </div>
         )}
       </div>
