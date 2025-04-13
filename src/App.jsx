@@ -67,7 +67,3 @@ function App() {
 }
 
 export default App;
-
-// NETLIFY_AUTH_TOKEN: يمكنك الحصول عليه من إعدادات حسابك على Netlify
-// NETLIFY_SITE_ID: معرف موقعك على Netlify
-// VITE_API_URL: رابط الـ API الخاص بالتطبيق
