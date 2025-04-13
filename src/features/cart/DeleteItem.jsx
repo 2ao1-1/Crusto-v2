@@ -1,16 +1,23 @@
-import { useDispatch } from 'react-redux';
-import { deleteItem } from './cartSlice';
+// Import UI components
 import Button from '../../ui/Button';
 
-export default function DeleteItem({ pizzaId }) {
+// Import Redux related
+import { useDispatch } from 'react-redux';
+import { deleteItem } from './cartSlice';
+
+/**
+ * DeleteItem Component
+ * Button component to remove an item from the cart
+ * @param {string} props.pizzaId - The ID of the pizza to delete
+ */
+function DeleteItem({ pizzaId }) {
   const dispatch = useDispatch();
 
-  function handleDeleteItem() {
-    dispatch(deleteItem(pizzaId));
-  }
   return (
-    <Button type="small" onClick={handleDeleteItem}>
-      delete
+    <Button type="small" onClick={() => dispatch(deleteItem(pizzaId))}>
+      Delete
     </Button>
   );
 }
+
+export default DeleteItem;
