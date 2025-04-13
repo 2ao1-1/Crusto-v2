@@ -14,6 +14,7 @@ import CreateOrder, {
 } from './features/order/CreateOrder';
 import Order, { loader as orderLoader } from './features/order/Order';
 import { action as updateOrderAction } from './features/order/UpdateOrder';
+import CreateUser from './features/user/CreateUser';
 
 // Router Configuration
 const router = createBrowserRouter([
@@ -33,6 +34,12 @@ const router = createBrowserRouter([
         path: '/menu',
         element: <Menu />,
         loader: menuLoader,
+        errorElement: <Error />,
+      },
+      // User Route
+      {
+        path: '/user',
+        element: <CreateUser />,
         errorElement: <Error />,
       },
 

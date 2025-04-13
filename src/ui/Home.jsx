@@ -17,10 +17,10 @@ function Home() {
         </video>
 
         {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/60"></div>
+        <div className="absolute inset-0 z-10 bg-black/60"></div>
 
         {/* Content */}
-        <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 text-center">
+        <div className="relative z-20 flex h-full flex-col items-center justify-center px-4 text-center">
           <h1 className="mb-6 text-4xl font-bold text-white md:text-6xl lg:text-7xl">
             Welcome to Crusto Pizza
           </h1>

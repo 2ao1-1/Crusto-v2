@@ -17,8 +17,11 @@ function CreateUser() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="text-center">
-      <p className="mb-4 text-sm text-stone-600 md:text-base">
+    <form
+      onSubmit={handleSubmit}
+      className="mx-auto max-w-md px-4 py-8 text-center"
+    >
+      <p className="mb-6 text-base text-stone-600">
         Welcome! Please enter your name to start ordering
       </p>
 
@@ -27,7 +30,7 @@ function CreateUser() {
         placeholder="Your full name"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        className="input mb-8 w-72 text-center"
+        className="input mb-8"
         required
       />
 

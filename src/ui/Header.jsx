@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom';
 import SearchOrder from '../features/order/SearchOrder';
 import Username from '../features/user/Username';
 import Button from './Button';
+import { useSelector } from 'react-redux';
 
 function Header() {
+  const username = useSelector((state) => state.user.username);
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
@@ -24,13 +27,15 @@ function Header() {
           <div className="hidden items-center gap-8 md:flex">
             <SearchOrder />
             <nav className="flex items-center gap-4 font-semibold text-second">
-              <Username />
-              <Button to="/menu" type="second">
-                Menu
-              </Button>
-              <Button to="/cart" type="second">
-                Cart
-              </Button>
+              {username ? (
+                <Username />
+              ) : (
+                <Button to="/user" type="second">
+                  👤 create user
+                </Button>
+              )}
+
+              <Link to="/cart">🛒</Link>
             </nav>
           </div>
 

@@ -40,30 +40,25 @@ function CreateOrder() {
 
       <Form method="POST" className="space-y-8">
         <div className="space-y-6 rounded-lg bg-white p-6 shadow-md">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            <label className="font-medium text-main sm:basis-40">
-              First Name
-            </label>
-            <input
-              className="input grow"
-              type="text"
-              name="customer"
-              defaultValue={username}
-              required
-            />
-          </div>
-
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            <label className="font-medium text-main sm:basis-40">
-              Phone number
-            </label>
-            <div className="grow">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+            <label className="font-medium text-main sm:w-32">First Name</label>
+            <div className="flex-1">
               <input
-                className="input w-full"
-                type="tel"
-                name="phone"
+                className="input"
+                type="text"
+                name="customer"
+                defaultValue={username}
                 required
               />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+            <label className="font-medium text-main sm:w-32">
+              Phone number
+            </label>
+            <div className="flex-1">
+              <input className="input" type="tel" name="phone" required />
               {formErrors?.phone && (
                 <p className="mt-2 rounded bg-red-100 p-2 text-xs text-main">
                   {formErrors.phone}
@@ -72,35 +67,37 @@ function CreateOrder() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            <label className="font-medium text-main sm:basis-40">Address</label>
-            <div className="relative grow">
-              <input
-                className="input w-full"
-                type="text"
-                name="address"
-                disabled={isLoadingAddress}
-                defaultValue={address}
-                required
-              />
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+            <label className="font-medium text-main sm:w-32">Address</label>
+            <div className="flex-1">
+              <div className="relative">
+                <input
+                  className="input"
+                  type="text"
+                  name="address"
+                  disabled={isLoadingAddress}
+                  defaultValue={address}
+                  required
+                />
+                {!position.latitude && !position.longitude && (
+                  <span className="absolute right-1 top-1/2 -translate-y-1/2">
+                    <Button
+                      type="small"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        dispatch(fetchAddress());
+                      }}
+                      disabled={isLoadingAddress}
+                    >
+                      Get Position
+                    </Button>
+                  </span>
+                )}
+              </div>
               {addressStatus === 'error' && (
                 <p className="mt-2 rounded-md bg-red-100 p-2 text-xs text-red-700">
                   {errorAddress}
                 </p>
-              )}
-              {!position.latitude && !position.longitude && (
-                <span className="absolute right-[3px] top-[3px] z-50">
-                  <Button
-                    type="small"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      dispatch(fetchAddress());
-                    }}
-                    disabled={isLoadingAddress}
-                  >
-                    Get Position
-                  </Button>
-                </span>
               )}
             </div>
           </div>
