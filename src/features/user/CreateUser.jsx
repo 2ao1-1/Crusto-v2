@@ -11,16 +11,15 @@ function CreateUser() {
 
   function handleSubmit(e) {
     e.preventDefault();
-
     if (!username) return;
     dispatch(updateName(username));
     navigate('/menu');
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="text-center">
       <p className="mb-4 text-sm text-stone-600 md:text-base">
-        👋 Welcome! Please start by telling us your name:
+        Welcome! Please enter your name to start ordering
       </p>
 
       <input
@@ -28,7 +27,8 @@ function CreateUser() {
         placeholder="Your full name"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        className="input mb-8 w-72"
+        className="input mb-8 w-72 text-center"
+        required
       />
 
       {username !== '' && (

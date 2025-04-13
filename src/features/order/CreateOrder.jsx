@@ -1,32 +1,21 @@
-import { useState } from 'react';
 import { Form, redirect, useActionData, useNavigation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-
-// Services & Utils
 import { createOrder } from '../../services/apiRestaurant';
-import { formatCurrency } from '../../utils/helpers';
-
-// Components
 import Button from '../../ui/Button';
-import EmptyCart from '../cart/EmptyCart';
-
-// Store
+import { useDispatch, useSelector } from 'react-redux';
 import { clearCart, getCart, getTotalCartPrice } from '../cart/cartSlice';
-import { fetchAddress } from '../user/userSlice';
+import EmptyCart from '../cart/EmptyCart';
 import store from '../../store';
-
-// Phone validation regex
-const isValidPhone = (str) =>
-  /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
-    str,
-  );
+import { formatCurrency } from '../../utils/helpers';
+import { useState } from 'react';
+import { fetchAddress } from '../user/userSlice';
 
 function CreateOrder() {
   const [withPriority, setWithPriority] = useState(false);
-  const dispatch = useDispatch();
   const navigation = useNavigation();
+  const isSubmitting = navigation.state === 'submitting';
+  const formErrors = useActionData();
+  const dispatch = useDispatch();
 
-  // Redux state
   const {
     username,
     status: addressStatus,
@@ -34,98 +23,119 @@ function CreateOrder() {
     address,
     error: errorAddress,
   } = useSelector((state) => state.user);
-  const cart = useSelector(getCart);
-  const totalCartPrice = useSelector(getTotalCartPrice);
-
-  const formErrors = useActionData();
-  const isSubmitting = navigation.state === 'submitting';
   const isLoadingAddress = addressStatus === 'loading';
 
-  const priority = withPriority ? totalCartPrice * 0.2 : 0;
-  const totalPrice = totalCartPrice + priority;
+  const cart = useSelector(getCart);
+  const totalCartPrice = useSelector(getTotalCartPrice);
+  const priorityPrice = withPriority ? totalCartPrice * 0.2 : 0;
+  const totalPrice = totalCartPrice + priorityPrice;
 
   if (!cart.length) return <EmptyCart />;
 
   return (
-    <div className="px-4 py-6">
-      <h2 className="mb-8 text-xl font-semibold">Ready to order? Let's go!</h2>
+    <div className="mx-auto max-w-3xl px-4 py-6">
+      <h2 className="mb-8 text-2xl font-semibold text-main md:text-3xl">
+        Ready to order? Let's go!
+      </h2>
 
-      <Form method="POST">
-        {/* Customer Info */}
-        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-          <label className="sm:basis-40">First Name</label>
-          <input
-            type="text"
-            name="customer"
-            required
-            className="input grow"
-            defaultValue={username}
-          />
-        </div>
-
-        {/* Phone Number */}
-        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-          <label className="sm:basis-40">Phone number</label>
-          <div className="grow">
-            <input type="tel" name="phone" required className="input w-full" />
-            {formErrors?.phone && (
-              <p className="mt-2 rounded-md bg-red-100 p-2 text-xs text-red-700">
-                {formErrors.phone}
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Address */}
-        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-          <label className="sm:basis-40">Address</label>
-          <div className="relative grow">
+      <Form method="POST" className="space-y-8">
+        <div className="space-y-6 rounded-lg bg-white p-6 shadow-md">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            <label className="font-medium text-main sm:basis-40">
+              First Name
+            </label>
             <input
+              className="input grow"
               type="text"
-              name="address"
+              name="customer"
+              defaultValue={username}
               required
-              className="input w-full"
-              disabled={isLoadingAddress}
-              defaultValue={address}
             />
-            {addressStatus === 'error' && (
-              <p className="mt-2 rounded-md bg-red-100 p-2 text-xs text-red-700">
-                {errorAddress}
-              </p>
-            )}
-            {!position.latitude && !position.longitude && (
-              <span className="absolute right-[5px] top-[5px] z-10">
-                <Button
-                  type="small"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(fetchAddress());
-                  }}
-                  disabled={isLoadingAddress}
-                >
-                  Get Position
-                </Button>
-              </span>
-            )}
+          </div>
+
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            <label className="font-medium text-main sm:basis-40">
+              Phone number
+            </label>
+            <div className="grow">
+              <input
+                className="input w-full"
+                type="tel"
+                name="phone"
+                required
+              />
+              {formErrors?.phone && (
+                <p className="mt-2 rounded bg-red-100 p-2 text-xs text-main">
+                  {formErrors.phone}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            <label className="font-medium text-main sm:basis-40">Address</label>
+            <div className="relative grow">
+              <input
+                className="input w-full"
+                type="text"
+                name="address"
+                disabled={isLoadingAddress}
+                defaultValue={address}
+                required
+              />
+              {addressStatus === 'error' && (
+                <p className="mt-2 rounded-md bg-red-100 p-2 text-xs text-red-700">
+                  {errorAddress}
+                </p>
+              )}
+              {!position.latitude && !position.longitude && (
+                <span className="absolute right-[3px] top-[3px] z-50">
+                  <Button
+                    type="small"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      dispatch(fetchAddress());
+                    }}
+                    disabled={isLoadingAddress}
+                  >
+                    Get Position
+                  </Button>
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Priority Option */}
-        <div className="mb-12 flex items-center gap-5">
-          <input
-            type="checkbox"
-            name="priority"
-            id="priority"
-            className="h-6 w-6 accent-yellow-400 focus:outline-none focus:ring focus:ring-yellow-400 focus:ring-opacity-50 focus:ring-offset-2"
-            value={withPriority}
-            onChange={(e) => setWithPriority(e.target.checked)}
-          />
-          <label htmlFor="priority" className="font-medium">
-            Want to give your order priority?
-          </label>
+        <div className="space-y-6 rounded-lg bg-white p-6 shadow-md">
+          <div className="flex items-center gap-5">
+            <input
+              className="h-6 w-6 accent-main focus:outline-none focus:ring focus:ring-main/30 focus:ring-offset-2"
+              type="checkbox"
+              name="priority"
+              id="priority"
+              value={withPriority}
+              onChange={(e) => setWithPriority(e.target.checked)}
+            />
+            <label htmlFor="priority" className="font-medium text-main">
+              Want to give your order priority?
+            </label>
+          </div>
+
+          <div className="space-y-2 text-main">
+            <p className="text-sm font-medium">
+              Price for pizza: {formatCurrency(totalCartPrice)}
+            </p>
+            {withPriority && (
+              <p className="text-sm font-medium">
+                Price for priority: {formatCurrency(priorityPrice)}
+              </p>
+            )}
+            <p className="text-lg font-bold">
+              Total: {formatCurrency(totalPrice)}
+            </p>
+          </div>
         </div>
 
-        {/* Hidden Fields */}
         <input type="hidden" name="cart" value={JSON.stringify(cart)} />
         <input
           type="hidden"
@@ -137,9 +147,8 @@ function CreateOrder() {
           }
         />
 
-        {/* Submit Button */}
-        <div>
-          <Button type="primary" disabled={isSubmitting || isLoadingAddress}>
+        <div className="flex justify-end">
+          <Button disabled={isSubmitting || isLoadingAddress} type="primary">
             {isSubmitting
               ? 'Placing order...'
               : `Order now for ${formatCurrency(totalPrice)}`}
@@ -152,7 +161,7 @@ function CreateOrder() {
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const data = Object.fromEntries(formData.entries());
+  const data = Object.fromEntries(formData);
 
   const order = {
     ...data,
@@ -161,18 +170,24 @@ export async function action({ request }) {
   };
 
   const errors = {};
-  if (!isValidPhone(order.phone)) {
+  if (!isValidPhone(order.phone))
     errors.phone =
-      'Please provide a valid phone number. We might need it to contact you.';
-  }
+      'Please give us your correct phone number. We might need it to contact you.';
 
   if (Object.keys(errors).length > 0) return errors;
 
-  // Create order and redirect
+  // If everything is okay, create new order and redirect
   const newOrder = await createOrder(order);
+
+  // Do NOT overuse
   store.dispatch(clearCart());
 
   return redirect(`/order/${newOrder.id}`);
+}
+
+function isValidPhone(str) {
+  const phone = /^\+?\d{10,14}$/;
+  return phone.test(str);
 }
 
 export default CreateOrder;

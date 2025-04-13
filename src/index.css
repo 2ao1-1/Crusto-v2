@@ -4,7 +4,7 @@
 
 @layer components {
   .input {
-    @apply rounded-full border border-stone-200 px-4 py-2 text-sm transition-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-yellow-400 focus:ring-opacity-50 md:px-6 md:py-3;
+    @apply focus:ring-main/30 w-full rounded-full border border-stone-200 px-4 py-2 text-sm transition-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring md:px-6 md:py-3;
   }
 
   .wrapper {
@@ -19,7 +19,7 @@
     height: 20px;
     position: absolute;
     border-radius: 50%;
-    background-color: theme('colors.yellow.500');
+    background-color: #c11f24;
     left: 15%;
     transform-origin: 50%;
     animation: circle7124 0.5s alternate infinite ease;
@@ -97,13 +97,11 @@
   }
 }
 
-/* https://dev.to/afif/i-made-100-css-loaders-for-your-next-project-4eje */
-
-/* loaders */
-/* .loader {
+/* Custom styles for loader animation */
+.loader {
   width: 45px;
   aspect-ratio: 0.75;
-  --c: no-repeat linear-gradient(theme(colors.stone.800) 0 0);
+  --c: no-repeat linear-gradient(theme(colors.main) 0 0);
   background:
     var(--c) 0% 50%,
     var(--c) 50% 50%,
@@ -138,4 +136,3 @@
       100% 100%;
   }
 }
- */

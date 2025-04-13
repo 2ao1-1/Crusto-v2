@@ -1,13 +1,19 @@
 /** @type {import('tailwindcss').Config} */
-// eslint-disable-next-line
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    fontFamily: {
-      sans: 'Roboto Mono, monospace',
-    },
     extend: {
-      height: { screen: '100dvh' },
+      fontFamily: {
+        sans: 'Roboto Mono, monospace',
+      },
+      colors: {
+        main: '#c11f24',
+        second: '#efe3bc',
+        accentGold: '#FFC107',
+      },
+      height: {
+        screen: '100vh',
+      },
     },
   },
   plugins: [],
