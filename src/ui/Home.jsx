@@ -20,11 +20,11 @@ function Home() {
         <div className="absolute inset-0 z-10 bg-black/60"></div>
 
         {/* Content */}
-        <div className="relative z-20 flex h-full flex-col items-center justify-center px-4 text-center">
-          <h1 className="mb-6 text-4xl font-bold text-white md:text-6xl lg:text-7xl">
+        <div className="relative z-20 flex h-full flex-col items-center justify-center px-4 py-8 text-center">
+          <h1 className="mb-12 text-4xl font-bold text-white md:text-6xl lg:text-7xl">
             Welcome to Crusto Pizza
           </h1>
-          <p className="mb-8 max-w-2xl text-sm text-white/90 md:text-base">
+          <p className="mb-12 max-w-2xl text-sm text-white/90 md:text-base">
             Discover the finest authentic Italian pizza crafted with premium
             ingredients and traditional recipes passed down through generations.
           </p>
@@ -35,7 +35,7 @@ function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16">
+      <section className="py-28 md:py-40">
         <div className="mx-auto max-w-6xl px-4">
           <h2 className="mb-12 text-center text-3xl font-bold text-main md:text-4xl">
             Why Choose Crusto Pizza?
@@ -74,9 +74,9 @@ function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-main py-16 text-white">
+      <section className="bg-main py-28 text-white md:py-40">
         <div className="mx-auto max-w-4xl px-4 text-center">
-          <h2 className="mb-4 text-3xl font-bold md:text-4xl">
+          <h2 className="mb-12 text-3xl font-bold md:text-4xl">
             Ready to Taste the Best Pizza?
           </h2>
 
