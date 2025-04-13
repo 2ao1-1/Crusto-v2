@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SearchOrder from '../features/order/SearchOrder';
 import Username from '../features/user/Username';
+import Button from './Button';
 
 function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -24,18 +25,12 @@ function Header() {
             <SearchOrder />
             <nav className="flex items-center gap-4 font-semibold text-second">
               <Username />
-              <Link
-                to="/menu"
-                className="transition-colors duration-200 hover:text-white"
-              >
+              <Button to="/menu" type="second">
                 Menu
-              </Link>
-              <Link
-                to="/cart"
-                className="transition-colors duration-200 hover:text-white"
-              >
+              </Button>
+              <Button to="/cart" type="second">
                 Cart
-              </Link>
+              </Button>
             </nav>
           </div>
 

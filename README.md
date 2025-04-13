@@ -110,7 +110,3 @@ VITE_API_URL=your_api_url
 ## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 📞 Support
-
-For support, email support@crusto.com or join our Slack channel.
