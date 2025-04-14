@@ -68,11 +68,11 @@ function Header() {
             <SearchOrder view="small" />
             <Username />
             <Link
-              to="/menu"
+              to="/user"
               className="transition-colors duration-200 hover:text-white"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Menu
+              Create User
             </Link>
             <Link
               to="/cart"
