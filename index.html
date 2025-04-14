@@ -2,11 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <link
-      rel="icon"
-      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍕</text></svg>"
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
 
     <!-- Primary Meta Tags -->
@@ -18,22 +16,28 @@
     />
 
     <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#c11f24" />
     <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="Crusto Pizza" />
+
+    <!-- iOS Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
     <meta name="apple-mobile-web-app-title" content="Crusto Pizza" />
-    <meta name="application-name" content="Crusto Pizza" />
-    <meta name="theme-color" content="#c11f24" />
 
-    <!-- Add to homescreen for Safari on iOS -->
+    <!-- App Icons -->
     <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/icons/apple-touch-icon.png"
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="/icons/icon-192x192.png"
     />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+
+    <!-- Manifest -->
     <link rel="manifest" href="/manifest.json" />
 
     <!-- Fonts -->
@@ -44,8 +48,17 @@
       rel="stylesheet"
     />
 
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <script type="module" crossorigin src="/assets/index-6128c0cd.js"></script>
+    <!-- GitHub Pages Routing -->
+    <script type="text/javascript">
+      (function() {
+        var redirect = sessionStorage.redirect;
+        delete sessionStorage.redirect;
+        if (redirect && redirect != location.href) {
+          history.replaceState(null, null, redirect);
+        }
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-03463e13.js"></script>
     <link rel="stylesheet" href="/assets/index-470f2cdd.css">
   </head>
   <body class="bg-stone-100 text-stone-700">
